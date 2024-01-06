@@ -57,7 +57,7 @@ async function test (req: IReq, res: IRes) {
       merchantUserId: 'MUID' + 22,
       name: "king",
       amount: 1000,
-      redirectUrl: `http://localhost:5000/api/users/status/${merchantTransactionId}`,
+      redirectUrl: `https://express-gen-ts.hop.sh/api/users/status/${merchantTransactionId}`,
       redirectMode: 'POST',
       mobileNumber: 1111,
       paymentInstrument: {
