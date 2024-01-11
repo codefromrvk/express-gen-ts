@@ -45,7 +45,13 @@ async function delete_ (req: IReq, res: IRes) {
 /**
  * Test one user.
  */
+
+const url = "https://api.phonepe.com/apis/hermes" 
+// || "https://api-preprod.phonepe.com/apis/pg-sandbox"
+
+
 async function test (req: IReq, res: IRes) {
+
   try {
     const id = +req.params.id;
     console.log("hit");
@@ -54,12 +60,13 @@ async function test (req: IReq, res: IRes) {
     const data = {
       merchantId: process.env.MERCHANT_ID,
       merchantTransactionId: merchantTransactionId,
-      merchantUserId: 'MUID' + 22,
-      name: "king",
+      merchantUserId: 'MUID' + 24,
+      // name: "hi",
       amount: 1000,
+      // redirectUrl: `http://localhost:5000/api/users/status/${merchantTransactionId}`,
       redirectUrl: `https://express-gen-ts.hop.sh/api/users/status/${merchantTransactionId}`,
       redirectMode: 'POST',
-      mobileNumber: 1111,
+      mobileNumber: "7338213553",
       paymentInstrument: {
         type: 'PAY_PAGE'
       }
@@ -75,8 +82,7 @@ async function test (req: IReq, res: IRes) {
     const sha256 = crypto.createHash('sha256').update(string).digest('hex');
     const checksum = sha256 + '###' + keyIndex;
     console.log({ checksum, payloadMain });
-
-    const prod_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay"
+    const prod_URL = url + "/pg/v1/pay"
     const options = {
       method: 'POST',
       url: prod_URL,
@@ -94,7 +100,7 @@ async function test (req: IReq, res: IRes) {
       return res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
     })
       .catch(function (error) {
-        console.error(error);
+        console.error("ERROR:", error);
       });
   } catch (error) {
     res.status(500).send({
@@ -117,7 +123,7 @@ async function status (req: IReq, res: IRes) {
   const checksum = sha256 + "###" + keyIndex;
   const options = {
     method: 'GET',
-    url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${merchantTransactionId}`,
+    url: url + `/pg/v1/status/${merchantId}/${merchantTransactionId}`,
     headers: {
       accept: 'application/json',
       'Content-Type': 'application/json',
